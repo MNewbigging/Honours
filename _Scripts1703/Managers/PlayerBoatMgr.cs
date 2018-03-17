@@ -20,8 +20,7 @@ public class PlayerBoatMgr : MonoBehaviour {
     private Transform player;
     // The current boat prefab
     private GameObject boat;
-    // Currently selected boat
-    private int selectedBoat = 3;
+
 
 	void Start () {
         // Grab player
@@ -34,11 +33,11 @@ public class PlayerBoatMgr : MonoBehaviour {
         fang = Resources.Load("fang") as GameObject;
 
         // Instantiate player boat
-        LoadBoatModel();
+        LoadBoatModel(1);
 	}
 	
-    // Handles model swapping
-    private void LoadBoatModel()
+    // Handles model swapping, takes in selected boat choice from PlayerInput when paused
+    public void LoadBoatModel(int selectedBoat)
     {
         // Remove any previously existing boat
         Destroy(boat);

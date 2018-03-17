@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 // Loads game, quits application. Handles input taken from InputMgr
 public class MenuMgr : MonoBehaviour {
@@ -11,6 +13,19 @@ public class MenuMgr : MonoBehaviour {
     // 1 - Quit
     private int curSelected = 0;
 
+    List<Button> buttons = new List<Button>();
+
+    // Setup buttons
+    private void Start()
+    {
+        Button start = GameObject.FindGameObjectWithTag("BtnStart").GetComponent<Button>();
+        Button quit = GameObject.FindGameObjectWithTag("BtnQuit").GetComponent<Button>();
+        buttons.Add(start);
+        buttons.Add(quit);
+
+        // Set initial colours
+        HighlightButtons();
+    }
 
     // Close game routine
     IEnumerator QuitGame()
@@ -18,8 +33,20 @@ public class MenuMgr : MonoBehaviour {
         // Wait 
         yield return new WaitForSeconds(2);
         // Quit game
-        UnityEditor.EditorApplication.isPlaying = false;
-        // Application.Quit();
+        //UnityEditor.EditorApplication.isPlaying = false;
+        Application.Quit();
+    }
+
+    // Change button background colours according to what's been selected
+    private void HighlightButtons()
+    {
+        for (int i = 0; i < buttons.Count; i++)
+        {
+            if (i == curSelected)
+                buttons[i].image.color = Color.green;
+            else
+                buttons[i].image.color = Color.white;
+        }
     }
 
     // Handle input for main menu
@@ -37,6 +64,7 @@ public class MenuMgr : MonoBehaviour {
                 if (curSelected < 1)
                 {
                     curSelected++;
+                    HighlightButtons();
                 }
                 break;
             case 2: // Joystick left
@@ -44,6 +72,7 @@ public class MenuMgr : MonoBehaviour {
                 if (curSelected > 0)
                 {
                     curSelected--;
+                    HighlightButtons();
                 }
                 break;
             case 3: // Joystick down
